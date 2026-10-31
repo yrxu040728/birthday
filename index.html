@@ -78,6 +78,34 @@
   .st-left{left:-56px;bottom:-18px;transform:rotate(-8deg);}
   .st-right{right:-52px;top:-24px;transform:rotate(9deg);}
 
+  /* 照片墙 */
+  .photo-wall{margin-top:64px;text-align:center;}
+  .photo-grid{display:flex;flex-direction:column;gap:44px;align-items:center;margin-top:10px;}
+  .polaroid{
+    background:#fdf9ef;padding:14px 14px 52px;
+    box-shadow:0 14px 44px rgba(0,0,10,.55), 0 0 24px rgba(240,213,150,.2);
+    width:min(300px,78vw);position:relative;color:#3a3226;
+  }
+  .polaroid:nth-child(odd){transform:rotate(-2.5deg);}
+  .polaroid:nth-child(even){transform:rotate(2deg);}
+  .polaroid .ph{
+    width:100%;aspect-ratio:4/3;
+    background:linear-gradient(135deg,#efe6d4,#e2d5bd);
+    display:flex;align-items:center;justify-content:center;
+    color:#a89670;font-size:15px;letter-spacing:2px;
+    border:1px dashed #cbbb97;text-align:center;padding:10px;
+    cursor:pointer;
+  }
+  .polaroid .cap{
+    position:absolute;bottom:12px;left:0;right:0;text-align:center;
+    font-family:'Long Cang',cursive;font-size:19px;color:#7a6f5d;
+  }
+  .tape{
+    position:absolute;top:-12px;left:50%;transform:translateX(-50%) rotate(-3deg);
+    width:90px;height:26px;background:rgba(240,213,150,.75);
+    box-shadow:0 2px 6px rgba(0,0,0,.3);
+  }
+
   /* 蜡烛 */
   .cake-section{margin-top:80px;text-align:center;}
   .blow-btn{
@@ -166,6 +194,29 @@
     </div>
   </div>
 
+  <!-- 照片墙 -->
+  <div class="photo-wall">
+    <div class="section-title">✦ 一 些 瞬 间 ✦</div>
+    <div class="section-sub">（点击虚线区域，从手机相册选照片）</div>
+    <div class="photo-grid">
+      <div class="polaroid">
+        <div class="tape"></div>
+        <div class="ph" onclick="pickPhoto(this)">📸 点击换成照片 1</div>
+        <div class="cap" contenteditable="true">这里写照片故事…</div>
+      </div>
+      <div class="polaroid">
+        <div class="tape"></div>
+        <div class="ph" onclick="pickPhoto(this)">📸 点击换成照片 2</div>
+        <div class="cap" contenteditable="true">这里写照片故事…</div>
+      </div>
+      <div class="polaroid">
+        <div class="tape"></div>
+        <div class="ph" onclick="pickPhoto(this)">📸 点击换成照片 3</div>
+        <div class="cap" contenteditable="true">这里写照片故事…</div>
+      </div>
+    </div>
+  </div>
+
   <!-- 吹蜡烛 -->
   <div class="cake-section">
     <div class="section-title">✦ 对 着 星 星 许 个 愿 ✦</div>
@@ -234,6 +285,21 @@ function launchConfetti(n){
     c.style.animationDelay=(Math.random()*.8)+'s';
     box.appendChild(c);setTimeout(()=>c.remove(),6000);
   }
+}
+function pickPhoto(el){
+  const input=document.createElement('input');
+  input.type='file'; input.accept='image/*';
+  input.onchange=e=>{
+    const f=e.target.files[0];
+    if(!f) return;
+    const r=new FileReader();
+    r.onload=ev=>{
+      el.style.background='url('+ev.target.result+') center/cover no-repeat';
+      el.textContent=''; el.style.border='none';
+    };
+    r.readAsDataURL(f);
+  };
+  input.click();
 }
 document.querySelectorAll('[contenteditable]').forEach(el=>{
   const hint=el.dataset.hint;
