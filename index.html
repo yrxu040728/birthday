@@ -61,22 +61,33 @@
   /* 头像区 */
   .avatar-zone{margin-top:56px;text-align:center;}
   .section-title{font-family:'Ma Shan Zheng',cursive;font-size:26px;color:#f0d596;text-shadow:0 0 18px rgba(240,213,150,.5);}
-  .section-sub{color:#b8c4e8;font-size:14px;margin:6px 0 30px;}
-  .avatar-wrap{
-    display:inline-block;position:relative;
-    background:#fdf9ef;padding:14px 14px 48px;border-radius:12px;
-    box-shadow:0 14px 44px rgba(0,0,10,.55), 0 0 24px rgba(240,213,150,.25);
-    transform:rotate(-2deg);
+  .section-sub{color:#b8c4e8;font-size:14px;margin:6px 0 10px;}
+  .hero-stage{position:relative;display:inline-block;margin-top:18px;}
+  .hero-stage::before{
+    content:"";position:absolute;inset:-8% -20%;z-index:0;
+    background:radial-gradient(ellipse at 50% 60%,rgba(240,213,150,.28),transparent 65%);
   }
-  .avatar-wrap img{width:min(280px,72vw);border-radius:8px;display:block;}
-  .avatar-cap{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:'Long Cang',cursive;font-size:19px;color:#7a6f5d;}
-  .sticker{
-    position:absolute;width:86px;border-radius:14px;
-    box-shadow:0 8px 24px rgba(0,0,10,.5);
-    border:3px solid #fdf9ef;
+  .hero-img{
+    position:relative;z-index:1;
+    width:min(300px,74vw);
+    filter:drop-shadow(0 14px 30px rgba(0,0,10,.6)) drop-shadow(0 0 22px rgba(240,213,150,.35));
+    animation:heroFloat 4s ease-in-out infinite;
   }
-  .st-left{left:-56px;bottom:-18px;transform:rotate(-8deg);}
-  .st-right{right:-52px;top:-24px;transform:rotate(9deg);}
+  @keyframes heroFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .trophy-st{
+    position:absolute;z-index:2;right:-70px;bottom:-30px;width:110px;
+    filter:drop-shadow(0 8px 20px rgba(0,0,10,.5));
+    animation:heroFloat 4s ease-in-out infinite reverse;
+  }
+  .sh-frog{
+    position:absolute;z-index:2;left:-64px;top:-16px;width:76px;border-radius:12px;
+    border:3px solid #fdf9ef;box-shadow:0 8px 20px rgba(0,0,10,.5);
+    transform:rotate(-8deg);
+  }
+  .avatar-cap{
+    display:block;margin-top:20px;text-align:center;
+    font-family:'Long Cang',cursive;font-size:19px;color:#f0d596;
+  }
 
   /* 照片墙 */
   .photo-wall{margin-top:64px;text-align:center;}
@@ -140,9 +151,8 @@
   @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
 
   @media (max-width:600px){
-    .sticker{width:64px;}
-    .st-left{left:-20px;}
-    .st-right{right:-16px;}
+    .trophy-st{width:78px;right:-26px;bottom:-20px;}
+    .sh-frog{width:56px;left:-16px;}
     .paper{padding:44px 22px;}
   }
 </style>
@@ -185,12 +195,11 @@
   <div class="avatar-zone">
     <div class="section-title">✦ 星 河 里 的 你 ✦</div>
     <div class="section-sub">漫画里的他，正在书海与星海之间</div>
-    <div class="avatar-wrap">
-      <img id="avatar" src="avatar.png" alt="动画风头像"
-           onerror="this.onerror=null;this.src='shinchan-cloud.jpg';">
-      <div class="sticker st-left"><img src="shinchan-kamen.jpg" style="width:100%;border-radius:11px;display:block;" alt="动感超人"></div>
-      <div class="sticker st-right"><img src="shinchan-frog.jpg" style="width:100%;border-radius:11px;display:block;" alt="小新"></div>
-      <div class="cap avatar-cap" contenteditable="true">这里写一句配文…</div>
+    <div class="hero-stage">
+      <img class="hero-img" src="hero.png" alt="星河里的他">
+      <img class="trophy-st" src="sticker-trophy.png" alt="冠军">
+      <img class="sh-frog" src="shinchan-frog.jpg" alt="小新">
+      <span class="avatar-cap" contenteditable="true">这里写一句配文…</span>
     </div>
   </div>
 
