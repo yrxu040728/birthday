@@ -172,6 +172,29 @@
 .confetti{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden;}
 .cf{position:absolute;top:-20px;width:9px;height:14px;border-radius:2px;animation:fall linear forwards;}
 @keyframes fall{to{transform:translateY(105vh) rotate(720deg);}}
+
+  .cake-wrap{cursor:pointer;display:inline-block;transition:transform .3s;filter:drop-shadow(0 0 26px rgba(255,210,120,.35));}
+  .cake-wrap:hover{transform:scale(1.05);}
+  .section-sub{color:#b8c4e8;font-size:13px;margin:6px 0 14px;}
+  .smoke{opacity:0;transition:opacity .8s;}
+  .smoke circle{animation:smokeUp 2.4s ease-out infinite;}
+  .smoke circle:nth-child(2){animation-delay:.4s;}
+  .smoke circle:nth-child(3){animation-delay:.8s;}
+  @keyframes smokeUp{0%{transform:translateY(0);opacity:.7}100%{transform:translateY(-26px);opacity:0}}
+  .smoke.show{opacity:1;}
+  /* 许愿星光爆发 */
+  .wish-burst{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden;}
+  .wb{position:absolute;border-radius:50%;background:#fff8d0;box-shadow:0 0 8px #ffd27a;animation:wbOut 1.6s ease-out forwards;}
+  @keyframes wbOut{0%{transform:translate(0,0) scale(.4);opacity:1}100%{transform:translate(var(--tx),var(--ty)) scale(1.4);opacity:0}}
+  /* 漂浮的爱心/星星 */
+  .floaty{position:fixed;bottom:-40px;font-size:20px;pointer-events:none;z-index:5;opacity:0;animation:floatUp linear forwards;}
+  @keyframes floatUp{0%{opacity:0;transform:translateY(0) rotate(0)}10%{opacity:.9}90%{opacity:.7}100%{opacity:0;transform:translateY(-110vh) rotate(360deg)}}
+  /* 结尾文字呼吸光 */
+  .ending .big{animation:glowPulse 3s ease-in-out infinite;}
+  @keyframes glowPulse{0%,100%{text-shadow:0 0 12px rgba(240,213,150,.4)}50%{text-shadow:0 0 28px rgba(240,213,150,.95),0 0 46px rgba(240,213,150,.5)}}
+  /* 点击产生星星 */
+  .click-star{position:fixed;pointer-events:none;z-index:70;font-size:16px;animation:csOut .9s ease-out forwards;}
+  @keyframes csOut{0%{transform:scale(.3) rotate(0);opacity:1}100%{transform:scale(1.6) translateY(-40px) rotate(120deg);opacity:0}}
 </style></head>
 <body style="background:linear-gradient(180deg,#0a102e 0%,#16244d 45%,#243a72 100%);min-height:100vh;overflow-x:hidden">
 
@@ -224,15 +247,31 @@
     </div>
     <div class="cake-section" style="margin-top:70px;text-align:center">
       <div class="section-title">✦ 对 着 星 星 许 个 愿 ✦</div>
-      <svg width="200" height="180" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
-        <rect x="106" y="40" width="8" height="45" rx="3" fill="#e8a0bf"></rect>
-        <line x1="110" y1="40" x2="110" y2="28" stroke="#8d6e63" stroke-width="2.5"></line>
-        <ellipse cx="110" cy="20" rx="6" ry="11" fill="#ffd27a"></ellipse>
-        <ellipse cx="110" cy="23" rx="3" ry="6" fill="#fff7dd"></ellipse>
-        <rect x="55" y="85" width="110" height="34" rx="8" fill="#f7d9c4"></rect>
-        <rect x="38" y="119" width="144" height="46" rx="9" fill="#7f9fd9"></rect>
-        <ellipse cx="110" cy="172" rx="95" ry="10" fill="#33477e"></ellipse>
-      </svg>
+      <div class="section-sub">点一下蜡烛，替 TA 吹灭它</div>
+      <div class="cake-wrap" onclick="blow()" id="cakeWrap">
+        <svg width="220" height="200" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
+          <rect x="106" y="40" width="8" height="45" rx="3" fill="#e8a0bf"></rect>
+          <line x1="110" y1="40" x2="110" y2="28" stroke="#8d6e63" stroke-width="2.5"></line>
+          <g id="flame">
+            <ellipse cx="110" cy="20" rx="6" ry="11" fill="#ffd27a"></ellipse>
+            <ellipse cx="110" cy="23" rx="3" ry="6" fill="#fff7dd"></ellipse>
+          </g>
+          <g id="smoke" class="smoke">
+            <circle cx="110" cy="16" r="4" fill="#9aa7c7"></circle>
+            <circle cx="116" cy="8" r="3" fill="#aab5d2"></circle>
+            <circle cx="104" cy="4" r="2.5" fill="#bcc6dd"></circle>
+          </g>
+          <rect x="55" y="85" width="110" height="34" rx="8" fill="#f7d9c4"></rect>
+          <path d="M55 93 Q70 108 85 93 Q100 108 115 93 Q130 108 145 93 Q160 108 165 93 L165 90 Q165 85 160 85 L60 85 Q55 85 55 90 Z" fill="#fff0e6"></path>
+          <rect x="38" y="119" width="144" height="46" rx="9" fill="#7f9fd9"></rect>
+          <path d="M38 128 Q58 145 78 128 Q98 145 118 128 Q138 145 158 128 Q170 140 182 128 L182 124 Q182 119 176 119 L44 119 Q38 119 38 124 Z" fill="#a8c0e8"></path>
+          <circle cx="85" cy="80" r="6" fill="#e05555"></circle>
+          <circle cx="135" cy="80" r="6" fill="#e05555"></circle>
+          <ellipse cx="110" cy="172" rx="95" ry="10" fill="#33477e"></ellipse>
+        </svg>
+      </div>
+      <button class="blow-btn" onclick="blow()" id="blowBtn">💨 吹灭蜡烛</button>
+      <div class="wish-text" id="wish-text">愿望一定会实现的 🌟</div>
     </div>
     <div class="ending" style="margin-top:60px;text-align:center;font-family:'Long Cang',cursive">
       <div class="big" style="font-size:30px;color:#f0d596;margin-bottom:8px">生日快乐，今夜的星星都为你落 🌠</div>
@@ -265,5 +304,62 @@ function launchConfetti(n){
     box.appendChild(c);setTimeout(function(x){return function(){x.remove()};}(c),6000);
   }
 }
+</script>
+
+<script>
+var _blown = false;
+function blow(){
+  if(_blown) return; _blown = true;
+  var f=document.getElementById('flame'); if(f) f.classList.add('blow');
+  var sm=document.getElementById('smoke'); if(sm) sm.classList.add('show');
+  var w=document.getElementById('wish-text'); if(w) w.classList.add('show');
+  var b=document.getElementById('blowBtn'); if(b) b.textContent='🌟 愿望已许下';
+  var cw=document.getElementById('cakeWrap'); if(cw) cw.style.filter='drop-shadow(0 0 40px rgba(255,225,150,.8))';
+  wishBurst();
+  if(typeof launchConfetti==='function') launchConfetti(120);
+  // 延时撒星星
+  setTimeout(function(){ if(typeof launchConfetti==='function') launchConfetti(60); }, 700);
+}
+function wishBurst(){
+  var box=document.createElement('div'); box.className='wish-burst'; document.body.appendChild(box);
+  var rect=(document.querySelector('.cake-wrap')||{}).getBoundingClientRect?document.querySelector('.cake-wrap').getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};
+  var cx=rect.left+rect.width/2, cy=rect.top+rect.height/2;
+  for(var i=0;i<46;i++){
+    var d=document.createElement('div'); d.className='wb';
+    var a=Math.random()*Math.PI*2, r=110+Math.random()*230;
+    var sz=3+Math.random()*7;
+    d.style.cssText='left:'+cx+'px;top:'+cy+'px;width:'+sz+'px;height:'+sz+'px;--tx:'+(Math.cos(a)*r)+'px;--ty:'+(Math.sin(a)*r)+'px;animation-delay:'+(Math.random()*.35)+'s;';
+    box.appendChild(d);
+  }
+  setTimeout(function(){ box.remove(); }, 2600);
+}
+// 漂浮的爱心与星星
+(function floaties(){
+  var pool=['💛','✨','⭐','💫','🎈'];
+  setInterval(function(){
+    if(document.hidden) return;
+    var el=document.createElement('div'); el.className='floaty';
+    el.textContent=pool[Math.floor(Math.random()*pool.length)];
+    el.style.left=(Math.random()*96)+'vw';
+    el.style.fontSize=(14+Math.random()*14)+'px';
+    var dur=9+Math.random()*8;
+    el.style.animationDuration=dur+'s';
+    document.body.appendChild(el);
+    setTimeout(function(){el.remove();},dur*1000+500);
+  }, 2600);
+})();
+// 点击页面任意位置冒小星星
+document.addEventListener('click', function(e){
+  if(e.target.closest('a,button,.blow-btn,.cake-wrap')) return;
+  for(var i=0;i<3;i++){
+    var s=document.createElement('div'); s.className='click-star';
+    s.textContent=['✦','✧','⋆'][Math.floor(Math.random()*3)];
+    s.style.left=(e.clientX-8+(Math.random()*24-12))+'px';
+    s.style.top=(e.clientY-8+(Math.random()*24-12))+'px';
+    s.style.color=['#f0d596','#fff8d0','#a8c0e8'][Math.floor(Math.random()*3)];
+    document.body.appendChild(s);
+    setTimeout(function(x){return function(){x.remove();};}(s), 950);
+  }
+});
 </script>
 </body></html>
