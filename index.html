@@ -3,200 +3,134 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>致你 · 生日快乐</title>
+<title>今夜星光 · 生日快乐</title>
 <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Long+Cang&family=Noto+Serif+SC:wght@400;600&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#faf6ee;
-    --ink:#3a3226;
-    --ink-light:#7a6f5d;
-    --accent:#c0392b;
-    --accent-soft:#e8c9b8;
-    --line:#e3dbc9;
-  }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
-    background:var(--paper);
-    background-image:
-      radial-gradient(circle at 15% 20%, rgba(220,180,150,.08) 0, transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(192,57,43,.05) 0, transparent 40%),
-      repeating-linear-gradient(0deg, transparent, transparent 35px, rgba(120,100,70,.04) 36px);
-    color:var(--ink);
-    font-family:'Noto Serif SC', serif;
+    background:linear-gradient(180deg,#0a102e 0%,#16244d 45%,#243a72 100%);
+    color:#f0e9d8;
+    font-family:'Noto Serif SC',serif;
     line-height:1.9;
     overflow-x:hidden;
+    min-height:100vh;
   }
+  .stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+  .star{position:absolute;background:#fff;border-radius:50%;animation:twinkle var(--d,3s) ease-in-out infinite;}
+  @keyframes twinkle{0%,100%{opacity:.15}50%{opacity:1}}
+  .shooting{
+    position:fixed;top:6%;left:-10%;width:150px;height:2px;z-index:0;
+    background:linear-gradient(90deg,rgba(255,255,255,0),#fff);
+    transform:rotate(18deg);
+    animation:shoot 8s ease-in infinite;
+  }
+  @keyframes shoot{
+    0%{transform:translate(0,0) rotate(18deg);opacity:0}
+    3%{opacity:1}
+    10%{transform:translate(120vw,40vh) rotate(18deg);opacity:0}
+    100%{opacity:0}
+  }
+  .letter{max-width:680px;margin:0 auto;padding:60px 22px 120px;position:relative;z-index:2;
+    opacity:0;transform:translateY(30px);transition:opacity 1.2s ease,transform 1.2s ease;}
+  .letter.show{opacity:1;transform:translateY(0);}
 
-  /* ---------- 开场信封 ---------- */
-  #envelope-screen{
-    position:fixed; inset:0; z-index:100;
-    background:linear-gradient(160deg,#f3ead9 0%,#ede2cc 100%);
-    display:flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    cursor:pointer;
-    transition:opacity 1s ease, visibility 1s;
-  }
-  #envelope-screen.hidden{opacity:0; visibility:hidden;}
-  .envelope{
-    width:min(320px,80vw);
-    animation:float 3s ease-in-out infinite;
-    filter:drop-shadow(0 20px 40px rgba(90,70,40,.25));
-  }
-  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-  .tap-hint{
-    margin-top:36px; font-family:'Long Cang',cursive;
-    font-size:26px; color:var(--ink-light);
-    animation:blink 2s ease-in-out infinite; letter-spacing:4px;
-  }
-  @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
-
-  /* ---------- 信纸主体 ---------- */
-  .letter{
-    max-width:640px;
-    margin:0 auto;
-    padding:70px 26px 120px;
-    opacity:0; transform:translateY(30px);
-    transition:opacity 1.2s ease, transform 1.2s ease;
-  }
-  .letter.show{opacity:1; transform:translateY(0);}
+  /* 信纸卡片：夜色中的暖纸 */
   .paper{
-    background:#fffdf7;
-    border:1px solid var(--line);
-    box-shadow:0 10px 50px rgba(120,95,60,.12);
-    padding:48px 34px 60px;
+    background:#fdf9ef;
+    border-radius:18px;
+    box-shadow:0 0 0 1px rgba(240,213,150,.45), 0 0 40px rgba(240,213,150,.18), 0 18px 60px rgba(0,0,10,.5);
+    color:#3a3226;
+    padding:52px 32px 56px;
     position:relative;
   }
-  .paper::before{
-    content:""; position:absolute; top:0; left:0; right:0; height:6px;
-    background:linear-gradient(90deg,var(--accent-soft),var(--accent),var(--accent-soft));
+  .moon-badge{
+    position:absolute;top:-34px;left:50%;transform:translateX(-50%);
+    width:68px;height:68px;border-radius:50%;
+    background:radial-gradient(circle at 35% 35%,#fdf3c0,#f0d596 60%,#d9b96e);
+    box-shadow:0 0 30px rgba(240,213,150,.8);
   }
-  .washi{
-    position:absolute; top:-14px; left:50%; transform:translateX(-50%) rotate(-2deg);
-    width:110px; height:32px;
-    background:rgba(224,150,120,.55);
-    backdrop-filter:blur(1px);
-    box-shadow:0 2px 6px rgba(0,0,0,.08);
-  }
-  .date{
-    font-family:'Long Cang',cursive;
-    color:var(--ink-light); font-size:17px;
-    text-align:right; margin-bottom:26px;
-  }
-  .salutation{
-    font-family:'Ma Shan Zheng',cursive;
-    font-size:32px; margin-bottom:24px;
-  }
-  .salutation .blank{
-    display:inline-block; min-width:96px;
-    border-bottom:2px dashed #b9a98a;
-    color:#b9a98a; font-size:20px; text-align:center;
-  }
-  .body-text{
-    font-size:17px; color:var(--ink);
-    margin-bottom:22px; white-space:pre-line;
-  }
-  .body-text .fill{
-    display:inline-block; min-width:140px;
-    border-bottom:1.5px dashed #c9b892;
-    color:#b3a180;
-  }
-  .signature{
-    margin-top:44px; text-align:right;
-    font-family:'Ma Shan Zheng',cursive;
-    font-size:24px;
-  }
-  .signature .blank{
-    display:inline-block; min-width:72px;
-    border-bottom:2px dashed #b9a98a; color:#b9a98a; font-size:18px;
-  }
+  .date{font-family:'Long Cang',cursive;color:#8a7d63;font-size:17px;text-align:right;margin-bottom:22px;}
+  .salutation{font-family:'Ma Shan Zheng',cursive;font-size:32px;margin-bottom:22px;}
+  .salutation .blank{display:inline-block;min-width:96px;border-bottom:2px dashed #c9b892;color:#b3a180;font-size:20px;text-align:center;}
+  .body-text{font-size:17px;margin-bottom:20px;white-space:pre-line;}
+  .body-text .fill{display:inline-block;min-width:140px;border-bottom:1.5px dashed #c9b892;color:#b3a180;}
+  .signature{margin-top:40px;text-align:right;font-family:'Ma Shan Zheng',cursive;font-size:24px;}
+  .signature .blank{display:inline-block;min-width:72px;border-bottom:2px dashed #c9b892;color:#b3a180;font-size:18px;}
 
-  /* ---------- 照片区 ---------- */
-  .photos{margin-top:60px;}
-  .section-title{
-    font-family:'Ma Shan Zheng',cursive;
-    font-size:26px; text-align:center; margin-bottom:8px;
+  /* 头像区 */
+  .avatar-zone{margin-top:56px;text-align:center;}
+  .section-title{font-family:'Ma Shan Zheng',cursive;font-size:26px;color:#f0d596;text-shadow:0 0 18px rgba(240,213,150,.5);}
+  .section-sub{color:#b8c4e8;font-size:14px;margin:6px 0 30px;}
+  .avatar-wrap{
+    display:inline-block;position:relative;
+    background:#fdf9ef;padding:14px 14px 48px;border-radius:12px;
+    box-shadow:0 14px 44px rgba(0,0,10,.55), 0 0 24px rgba(240,213,150,.25);
+    transform:rotate(-2deg);
   }
-  .section-sub{text-align:center;color:var(--ink-light);font-size:14px;margin-bottom:34px;}
-  .photo-grid{display:flex; flex-direction:column; gap:44px; align-items:center;}
-  .polaroid{
-    background:#fffdf7;
-    padding:14px 14px 52px;
-    box-shadow:0 8px 30px rgba(100,80,50,.18);
-    width:min(300px,78vw);
-    position:relative;
+  .avatar-wrap img{width:min(280px,72vw);border-radius:8px;display:block;}
+  .avatar-cap{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-family:'Long Cang',cursive;font-size:19px;color:#7a6f5d;}
+  .sticker{
+    position:absolute;width:86px;border-radius:14px;
+    box-shadow:0 8px 24px rgba(0,0,10,.5);
+    border:3px solid #fdf9ef;
   }
-  .polaroid:nth-child(odd){transform:rotate(-2.5deg);}
-  .polaroid:nth-child(even){transform:rotate(2deg);}
-  .polaroid .ph{
-    width:100%; aspect-ratio:4/3;
-    background:
-      linear-gradient(135deg,#efe6d4,#e2d5bd);
-    display:flex; align-items:center; justify-content:center;
-    color:#a89670; font-size:15px; letter-spacing:2px;
-    border:1px dashed #cbbb97; text-align:center; padding:10px;
-  }
-  .polaroid .cap{
-    position:absolute; bottom:12px; left:0; right:0;
-    text-align:center; font-family:'Long Cang',cursive;
-    font-size:19px; color:var(--ink-light);
-  }
-  .tape{
-    position:absolute; top:-12px; left:50%; transform:translateX(-50%) rotate(-3deg);
-    width:90px; height:26px; background:rgba(214,177,140,.5);
-  }
+  .st-left{left:-56px;bottom:-18px;transform:rotate(-8deg);}
+  .st-right{right:-52px;top:-24px;transform:rotate(9deg);}
 
-  /* ---------- 蛋糕 & 蜡烛 ---------- */
-  .cake-section{margin-top:80px; text-align:center;}
-  .cake{width:220px; margin:20px auto 0;}
-  #flame{transform-origin:center bottom; animation:flicker .35s ease-in-out infinite alternate;}
+  /* 蜡烛 */
+  .cake-section{margin-top:80px;text-align:center;}
+  .blow-btn{
+    margin-top:26px;font-family:'Long Cang',cursive;font-size:22px;letter-spacing:3px;
+    background:transparent;border:2px solid #f0d596;color:#f0d596;
+    padding:10px 34px;border-radius:40px;cursor:pointer;transition:all .3s;
+  }
+  .blow-btn:hover{background:#f0d596;color:#1a2450;}
+  .wish-text{margin-top:18px;font-family:'Ma Shan Zheng',cursive;font-size:24px;color:#f0d596;opacity:0;transition:opacity 1s;}
+  .wish-text.show{opacity:1;}
+  #flame{transform-origin:center bottom;animation:flicker .35s ease-in-out infinite alternate;}
   @keyframes flicker{from{transform:scaleY(1)}to{transform:scaleY(.85) scaleX(1.1)}}
   #flame.blow{display:none;}
-  .smoke{opacity:0; transition:opacity 1s;}
-  .smoke.show{opacity:1; animation:rise 2s ease-out forwards;}
-  @keyframes rise{from{transform:translateY(0);opacity:.7}to{transform:translateY(-26px);opacity:0}}
-  .blow-btn{
-    margin-top:28px;
-    font-family:'Long Cang',cursive; font-size:22px; letter-spacing:3px;
-    background:none; border:2px solid var(--accent); color:var(--accent);
-    padding:10px 34px; border-radius:40px; cursor:pointer;
-    transition:all .3s;
-  }
-  .blow-btn:hover{background:var(--accent); color:#fff;}
-  .wish-text{
-    margin-top:20px; font-family:'Ma Shan Zheng',cursive;
-    font-size:24px; color:var(--accent); opacity:0; transition:opacity 1s;
-  }
-  .wish-text.show{opacity:1;}
+  .smoke{opacity:0;transition:opacity 1s;}
+  .smoke.show{opacity:1;}
 
-  /* ---------- 结尾 ---------- */
-  .ending{
-    margin-top:90px; text-align:center;
-    font-family:'Long Cang',cursive; color:var(--ink-light);
-  }
-  .ending .big{font-size:34px; color:var(--ink); margin-bottom:10px;}
-  .ending .small{font-size:18px;}
-  .confetti{position:fixed; inset:0; pointer-events:none; z-index:50; overflow:hidden;}
-  .cf{
-    position:absolute; top:-20px;
-    width:9px; height:14px; border-radius:2px;
-    animation:fall linear forwards;
-  }
-  @keyframes fall{
-    to{transform:translateY(105vh) rotate(720deg);}
+  .ending{margin-top:80px;text-align:center;font-family:'Long Cang',cursive;}
+  .ending .big{font-size:34px;color:#f0d596;text-shadow:0 0 20px rgba(240,213,150,.5);margin-bottom:8px;}
+  .ending .small{font-size:18px;color:#b8c4e8;}
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden;}
+  .cf{position:absolute;top:-20px;width:9px;height:14px;border-radius:2px;animation:fall linear forwards;}
+  @keyframes fall{to{transform:translateY(105vh) rotate(720deg);}}
+
+  /* 信封开场 */
+  #envelope-screen{position:fixed;inset:0;z-index:100;background:linear-gradient(160deg,#0d1436,#1a2450);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;
+    transition:opacity 1s,visibility 1s;}
+  #envelope-screen.hidden{opacity:0;visibility:hidden;}
+  .envelope{width:min(320px,80vw);animation:float 3s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(240,213,150,.3));}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+  .tap-hint{margin-top:36px;font-family:'Long Cang',cursive;font-size:26px;color:#f0d596;letter-spacing:4px;animation:blink 2s infinite;}
+  @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
+
+  @media (max-width:600px){
+    .sticker{width:64px;}
+    .st-left{left:-20px;}
+    .st-right{right:-16px;}
+    .paper{padding:44px 22px;}
   }
 </style>
 </head>
 <body>
 
-<!-- 开场信封 -->
+<div class="stars" id="stars"></div>
+<div class="shooting"></div>
+
 <div id="envelope-screen" onclick="openLetter()">
   <svg class="envelope" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-    <rect x="10" y="30" width="280" height="160" rx="8" fill="#e9dcc0" stroke="#c9b58a" stroke-width="2"/>
-    <path d="M10 38 L150 130 L290 38" fill="none" stroke="#c9b58a" stroke-width="2"/>
-    <path d="M10 38 L150 130 L290 38 L290 30 L10 30 Z" fill="#f2e7cd" stroke="#c9b58a" stroke-width="2"/>
-    <circle cx="150" cy="130" r="16" fill="#c0392b"/>
-    <text x="150" y="136" text-anchor="middle" font-size="15" fill="#fff" font-family="serif">囍</text>
+    <rect x="10" y="30" width="280" height="160" rx="8" fill="#1c2b58" stroke="#f0d596" stroke-width="2"/>
+    <path d="M10 38 L150 130 L290 38" fill="none" stroke="#f0d596" stroke-width="1.5"/>
+    <path d="M10 38 L150 130 L290 38 L290 30 L10 30 Z" fill="#24356a" stroke="#f0d596" stroke-width="2"/>
+    <circle cx="150" cy="130" r="16" fill="#f0d596"/>
+    <path d="M150 122 l4 8 8 1 -6 6 2 9 -8-5 -8 5 2-9 -6-6 8-1 z" fill="#1c2b58"/>
   </svg>
   <div class="tap-hint">✦ 点 拆 信 ✦</div>
 </div>
@@ -205,111 +139,83 @@
 
 <div class="letter" id="letter">
   <div class="paper">
-    <div class="washi"></div>
-    <div class="date">写于 　月　日 · 夜</div>
+    <div class="moon-badge"></div>
+    <div class="date">写于 　月　日 · 星夜</div>
 
     <div class="salutation">亲爱的 <span class="blank" contenteditable="true" data-hint="写TA的名字/昵称">点这里写名字</span> ：</div>
 
     <p class="body-text">见字如面。</p>
-
-    <p class="body-text"><span class="fill" contenteditable="true" data-hint="在这里写第一段，比如你们怎么认识的">点这里写第一段…</span></p>
-
+    <p class="body-text"><span class="fill" contenteditable="true" data-hint="在这里写第一段">点这里写第一段…</span></p>
     <p class="body-text"><span class="fill" contenteditable="true" data-hint="写一段回忆或想说的话">点这里写第二段…</span></p>
-
     <p class="body-text"><span class="fill" contenteditable="true" data-hint="写生日祝福">点这里写生日祝福…</span></p>
-
     <p class="body-text">生日快乐，我的朋友。</p>
 
-    <div class="signature">
-      —— 你的朋友 <span class="blank" contenteditable="true" data-hint="你的署名">署名</span>
+    <div class="signature">—— 你的朋友 <span class="blank" contenteditable="true" data-hint="你的署名">署名</span></div>
+  </div>
+
+  <!-- 动画风大头照 -->
+  <div class="avatar-zone">
+    <div class="section-title">✦ 星 河 里 的 你 ✦</div>
+    <div class="section-sub">漫画里的他，正在书海与星海之间</div>
+    <div class="avatar-wrap">
+      <img id="avatar" src="avatar.png" alt="动画风头像"
+           onerror="this.onerror=null;this.src='shinchan-cloud.jpg';">
+      <div class="sticker st-left"><img src="shinchan-kamen.jpg" style="width:100%;border-radius:11px;display:block;" alt="动感超人"></div>
+      <div class="sticker st-right"><img src="shinchan-frog.jpg" style="width:100%;border-radius:11px;display:block;" alt="小新"></div>
+      <div class="cap avatar-cap" contenteditable="true">这里写一句配文…</div>
     </div>
   </div>
 
-  <!-- 照片墙 -->
-  <div class="photos">
-    <div class="section-title">✦ 一 些 瞬 间 ✦</div>
-    <div class="section-sub">（点击虚线区域可换成你的照片）</div>
-    <div class="photo-grid">
-      <div class="polaroid">
-        <div class="tape"></div>
-        <div class="ph" onclick="pickPhoto(this)">📸 点击换成照片 1</div>
-        <div class="cap" contenteditable="true">这里写照片故事…</div>
-      </div>
-      <div class="polaroid">
-        <div class="tape"></div>
-        <div class="ph" onclick="pickPhoto(this)">📸 点击换成照片 2</div>
-        <div class="cap" contenteditable="true">这里写照片故事…</div>
-      </div>
-      <div class="polaroid">
-        <div class="tape"></div>
-        <div class="ph" onclick="pickPhoto(this)">📸 点击换成照片 3</div>
-        <div class="cap" contenteditable="true">这里写照片故事…</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- 蛋糕吹蜡烛 -->
+  <!-- 吹蜡烛 -->
   <div class="cake-section">
-    <div class="section-title">✦ 许 个 愿 吧 ✦</div>
+    <div class="section-title">✦ 对 着 星 星 许 个 愿 ✦</div>
     <div class="section-sub">点击按钮，替 TA 吹灭蜡烛</div>
-    <svg class="cake" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
-      <!-- 蜡烛 -->
+    <svg width="220" height="200" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
       <rect x="106" y="40" width="8" height="45" rx="3" fill="#e8a0bf"/>
       <line x1="110" y1="40" x2="110" y2="28" stroke="#8d6e63" stroke-width="2.5"/>
       <g id="flame">
-        <ellipse cx="110" cy="20" rx="6" ry="11" fill="#ffb347"/>
-        <ellipse cx="110" cy="23" rx="3" ry="6" fill="#fff3c4"/>
+        <ellipse cx="110" cy="20" rx="6" ry="11" fill="#ffd27a"/>
+        <ellipse cx="110" cy="23" rx="3" ry="6" fill="#fff7dd"/>
       </g>
       <g id="smoke" class="smoke">
-        <circle cx="110" cy="18" r="4" fill="#bbb"/>
-        <circle cx="114" cy="10" r="3" fill="#ccc"/>
+        <circle cx="110" cy="18" r="4" fill="#9aa7c7"/>
+        <circle cx="114" cy="10" r="3" fill="#aab5d2"/>
       </g>
-      <!-- 顶层 -->
       <rect x="55" y="85" width="110" height="34" rx="8" fill="#f7d9c4"/>
       <path d="M55 93 Q70 108 85 93 Q100 108 115 93 Q130 108 145 93 Q160 108 165 93 L165 90 Q165 85 160 85 L60 85 Q55 85 55 90 Z" fill="#fff0e6"/>
-      <!-- 底层 -->
-      <rect x="38" y="119" width="144" height="46" rx="9" fill="#e8b4b8"/>
-      <path d="M38 128 Q58 145 78 128 Q98 145 118 128 Q138 145 158 128 Q170 140 182 128 L182 124 Q182 119 176 119 L44 119 Q38 119 38 124 Z" fill="#f9e2e4"/>
-      <!-- 樱桃 -->
-      <circle cx="85" cy="80" r="6" fill="#c0392b"/>
-      <circle cx="135" cy="80" r="6" fill="#c0392b"/>
-      <line x1="85" y1="74" x2="85" y2="68" stroke="#6d4c41" stroke-width="1.5"/>
-      <line x1="135" y1="74" x2="135" y2="68" stroke="#6d4c41" stroke-width="1.5"/>
-      <!-- 盘子 -->
-      <ellipse cx="110" cy="172" rx="95" ry="10" fill="#efe6d4"/>
+      <rect x="38" y="119" width="144" height="46" rx="9" fill="#7f9fd9"/>
+      <path d="M38 128 Q58 145 78 128 Q98 145 118 128 Q138 145 158 128 Q170 140 182 128 L182 124 Q182 119 176 119 L44 119 Q38 119 38 124 Z" fill="#a8c0e8"/>
+      <circle cx="85" cy="80" r="6" fill="#e05555"/>
+      <circle cx="135" cy="80" r="6" fill="#e05555"/>
+      <ellipse cx="110" cy="172" rx="95" ry="10" fill="#33477e"/>
     </svg>
     <br>
     <button class="blow-btn" onclick="blow()">💨 吹灭蜡烛</button>
-    <div class="wish-text" id="wish-text">愿望一定会实现的 🎂</div>
+    <div class="wish-text" id="wish-text">愿望一定会实现的 🌟</div>
   </div>
 
   <div class="ending">
-    <div class="big">生日快乐，岁岁常欢愉 🎈</div>
+    <div class="big">生日快乐，今夜的星星都为你落 🌠</div>
     <div class="small">—— 这封信，只为你而写</div>
   </div>
 </div>
 
 <script>
+// 星星
+const sbox=document.getElementById('stars');
+for(let i=0;i<110;i++){
+  const s=document.createElement('div');s.className='star';
+  const size=Math.random()<.85?1.5:2.5+Math.random()*2;
+  s.style.width=size+'px';s.style.height=size+'px';
+  s.style.left=Math.random()*100+'vw';s.style.top=Math.random()*100+'vh';
+  s.style.setProperty('--d',(1.5+Math.random()*3)+'s');
+  s.style.animationDelay=(Math.random()*3)+'s';
+  sbox.appendChild(s);
+}
 function openLetter(){
   document.getElementById('envelope-screen').classList.add('hidden');
   document.getElementById('letter').classList.add('show');
   launchConfetti(60);
-}
-function pickPhoto(el){
-  const input=document.createElement('input');
-  input.type='file'; input.accept='image/*';
-  input.onchange=e=>{
-    const f=e.target.files[0];
-    if(!f) return;
-    const r=new FileReader();
-    r.onload=ev=>{
-      el.style.background='url('+ev.target.result+') center/cover no-repeat';
-      el.textContent='';
-      el.style.border='none';
-    };
-    r.readAsDataURL(f);
-  };
-  input.click();
 }
 function blow(){
   document.getElementById('flame').classList.add('blow');
@@ -317,25 +223,22 @@ function blow(){
   document.getElementById('wish-text').classList.add('show');
   launchConfetti(120);
 }
-const colors=['#c0392b','#e8a0bf','#f2c14e','#8fbf9f','#7f9fc9'];
+const colors=['#f0d596','#e8a0bf','#7f9fd9','#a8e6cf','#ffd27a'];
 function launchConfetti(n){
   const box=document.getElementById('confetti');
   for(let i=0;i<n;i++){
-    const c=document.createElement('div');
-    c.className='cf';
+    const c=document.createElement('div');c.className='cf';
     c.style.left=Math.random()*100+'vw';
     c.style.background=colors[Math.floor(Math.random()*colors.length)];
     c.style.animationDuration=(2.5+Math.random()*2)+'s';
     c.style.animationDelay=(Math.random()*.8)+'s';
-    box.appendChild(c);
-    setTimeout(()=>c.remove(),6000);
+    box.appendChild(c);setTimeout(()=>c.remove(),6000);
   }
 }
-// 占位提示：点击即可编辑，失焦时若为空恢复提示
 document.querySelectorAll('[contenteditable]').forEach(el=>{
   const hint=el.dataset.hint;
-  el.addEventListener('focus',()=>{ if(el.textContent.trim()===hint||el.textContent.trim()==='') el.textContent='';});
-  el.addEventListener('blur',()=>{ if(el.textContent.trim()===''&&hint) el.textContent=hint;});
+  el.addEventListener('focus',()=>{if(el.textContent.trim()===hint||el.textContent.trim()==='')el.textContent='';});
+  el.addEventListener('blur',()=>{if(el.textContent.trim()===''&&hint)el.textContent=hint;});
 });
 </script>
 </body>
