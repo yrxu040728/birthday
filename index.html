@@ -142,7 +142,13 @@
     display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;
     transition:opacity 1s,visibility 1s;}
   #envelope-screen.hidden{opacity:0;visibility:hidden;}
-  .envelope{width:min(320px,80vw);animation:float 3s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(240,213,150,.3));}
+  .envelope{display:block;width:100%;height:auto;animation:float 3s ease-in-out infinite;filter:drop-shadow(0 0 40px rgba(240,213,150,.32));}
+.env-stage{width:min(320px,80vw);}
+.env-title{font-family:'Ma Shan Zheng',cursive;font-size:34px;color:#f0d596;letter-spacing:6px;margin-bottom:6px;text-shadow:0 0 22px rgba(240,213,150,.45);}
+.env-sub{font-family:'Long Cang',cursive;font-size:16px;color:#93a4d2;letter-spacing:5px;margin-bottom:34px;}
+.env-aurora{position:absolute;width:70vw;height:70vw;max-width:520px;max-height:520px;border-radius:50%;
+  background:radial-gradient(circle,rgba(240,213,150,.16),transparent 62%);animation:aura 5s ease-in-out infinite;pointer-events:none;}
+@keyframes aura{0%,100%{transform:scale(1);opacity:.75}50%{transform:scale(1.14);opacity:1}}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
   .tap-hint{margin-top:36px;font-family:'Long Cang',cursive;font-size:26px;color:#f0d596;letter-spacing:4px;animation:blink 2s infinite;}
   @keyframes blink{0%,100%{opacity:.4}50%{opacity:1}}
@@ -190,23 +196,80 @@
   .floaty{position:fixed;bottom:-40px;font-size:20px;pointer-events:none;z-index:5;opacity:0;animation:floatUp linear forwards;}
   @keyframes floatUp{0%{opacity:0;transform:translateY(0) rotate(0)}10%{opacity:.9}90%{opacity:.7}100%{opacity:0;transform:translateY(-110vh) rotate(360deg)}}
   /* 结尾文字呼吸光 */
+  /* 逐段浮现 */
+  .body-text.reveal{opacity:0;transform:translateY(26px);transition:opacity .9s ease,transform .9s ease;}
+  .body-text.reveal.in{opacity:1;transform:none;}
+  .salutation.reveal,.signature.reveal{opacity:0;transform:translateY(20px);transition:opacity .9s ease .1s,transform .9s ease .1s;}
+  .salutation.reveal.in,.signature.reveal.in{opacity:1;transform:none;}
+  /* 打字机光标 */
+  .cursor{display:inline-block;width:2px;height:1em;background:#c9b88a;vertical-align:-2px;margin-left:2px;animation:caret .7s steps(1) infinite;}
+  @keyframes caret{0%,50%{opacity:1}51%,100%{opacity:0}}
+  /* 落款手写描出 */
+  .signature.draw{clip-path:inset(0 100% 0 0);animation:drawIn 2.4s ease-out forwards;}
+  @keyframes drawIn{to{clip-path:inset(0 0 0 0)}}
+  /* 开场第一段渐入 */
+  .paper{animation:paperIn 1.2s ease-out both;}
+  @keyframes paperIn{from{opacity:0;transform:translateY(34px) scale(.985)}to{opacity:1;transform:none}}
   .ending .big{animation:glowPulse 3s ease-in-out infinite;}
   @keyframes glowPulse{0%,100%{text-shadow:0 0 12px rgba(240,213,150,.4)}50%{text-shadow:0 0 28px rgba(240,213,150,.95),0 0 46px rgba(240,213,150,.5)}}
   /* 点击产生星星 */
+  /* 倒计时 */
+  .cd-screen{position:absolute;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    background:radial-gradient(circle at 50% 45%,#1b2a5c,#080d22 70%);transition:opacity .35s,visibility .35s;}
+  .cd-screen.gone{opacity:0;visibility:hidden;}
+  .cd-label{font-family:'Long Cang',cursive;font-size:17px;color:#8ea2d4;letter-spacing:8px;margin-bottom:4px;}
+  .cd-num{font-family:'Ma Shan Zheng',cursive;font-size:128px;line-height:1;color:#f0d596;
+    text-shadow:0 0 30px rgba(240,213,150,.7),0 0 70px rgba(240,213,150,.35);animation:cdPop .95s ease-out;}
+  @keyframes cdPop{0%{transform:scale(.3);opacity:0}45%{transform:scale(1.12);opacity:1}100%{transform:scale(1);opacity:.92}}
+  .cd-tip{font-family:'Long Cang',cursive;font-size:15px;color:#7d8fc0;letter-spacing:4px;margin-top:10px;}
+  @keyframes cdFlash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+  .cd-flash{position:absolute;inset:0;background:#fff8dc;pointer-events:none;animation:cdFlash .6s ease-out forwards;z-index:25;}
+
+  /* 流星 */
+  .meteor{position:fixed;top:-10vh;width:2px;height:2px;border-radius:50%;background:#fff;z-index:2;pointer-events:none;
+    box-shadow:0 0 6px 1px rgba(255,255,255,.9);animation:meteorFall linear forwards;}
+  .meteor::after{content:'';position:absolute;top:0;left:0;width:140px;height:1.4px;transform:translateX(-140px);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.85));border-radius:2px;}
+  @keyframes meteorFall{0%{opacity:0;transform:translate(0,0) rotate(18deg)}8%{opacity:1}100%{opacity:0;transform:translate(58vw,118vh) rotate(18deg)}}
+
   .click-star{position:fixed;pointer-events:none;z-index:70;font-size:16px;animation:csOut .9s ease-out forwards;}
   @keyframes csOut{0%{transform:scale(.3) rotate(0);opacity:1}100%{transform:scale(1.6) translateY(-40px) rotate(120deg);opacity:0}}
 </style></head>
 <body style="background:linear-gradient(180deg,#0a102e 0%,#16244d 45%,#243a72 100%);min-height:100vh;overflow-x:hidden">
 
 <div id="envelope-screen" onclick="openLetter()">
-  <svg class="envelope" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-    <rect x="10" y="30" width="280" height="160" rx="8" fill="#1c2b58" stroke="#f0d596" stroke-width="2"/>
-    <path d="M10 38 L150 130 L290 38" fill="none" stroke="#f0d596" stroke-width="1.5"/>
-    <path d="M10 38 L150 130 L290 38 L290 30 L10 30 Z" fill="#24356a" stroke="#f0d596" stroke-width="2"/>
-    <circle cx="150" cy="130" r="16" fill="#f0d596"/>
-    <path d="M150 122 l4 8 8 1 -6 6 2 9 -8-5 -8 5 2-9 -6-6 8-1 z" fill="#1c2b58"/>
-  </svg>
-  <div class="tap-hint">✦ 点 拆 信 ✦</div>
+  <div class="env-aurora"></div>
+  <div id="cd-screen" class="cd-screen">
+    <div class="cd-label">倒 计 时</div>
+    <div class="cd-num" id="cdNum">3</div>
+    <div class="cd-tip">准备拆礼物</div>
+  </div>
+  <div class="env-title">致 &nbsp;建&nbsp;国</div>
+  <div class="env-sub">2026 · 星夜来信</div>
+  <div class="env-stage">
+    <svg class="envelope" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="envBody" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#22346a"/><stop offset="1" stop-color="#1a2750"/>
+        </linearGradient>
+        <linearGradient id="envFlap" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2e4278"/><stop offset="1" stop-color="#223468"/>
+        </linearGradient>
+        <radialGradient id="sealG" cx="50%" cy="38%" r="62%">
+          <stop offset="0" stop-color="#fff4c8"/><stop offset="55%" stop-color="#f0d596"/><stop offset="100%" stop-color="#d8b063"/>
+        </radialGradient>
+      </defs>
+      <rect x="10" y="30" width="280" height="160" rx="10" fill="url(#envBody)" stroke="#f0d596" stroke-width="1.8"/>
+      <path d="M10 34 L150 126 L290 34 L290 30 L10 30 Z" fill="url(#envFlap)" stroke="#f0d596" stroke-width="1.6"/>
+      <path d="M18 182 L120 104" fill="none" stroke="#f0d596" stroke-width="1" opacity=".45"/>
+      <path d="M282 182 L180 104" fill="none" stroke="#f0d596" stroke-width="1" opacity=".45"/>
+      <circle cx="150" cy="126" r="19" fill="url(#sealG)"/>
+      <circle cx="150" cy="126" r="19" fill="none" stroke="#fff8dc" stroke-width="1" opacity=".85"/>
+      <path d="M150 115.68 L152.317 122.811 L159.815 122.811 L153.749 127.218 L156.066 134.349 L150 129.942 L143.934 134.349 L146.251 127.218 L140.185 122.811 L147.683 122.811 Z" fill="#1c2b58"/>
+    </svg>
+  </div>
+  <div class="tap-hint">✦ 点 一 下 · 拆 开 信 封 ✦</div>
+</div>
 </div>
 
 <div class="stars" id="stars"><div class="confetti" id="confetti"></div></div><div class="letter">
@@ -287,10 +350,34 @@ s.style.setProperty("--d",(1.5+Math.random()*3)+"s");sb.appendChild(s);}
 <script>
 function openLetter(){
   var e=document.getElementById('envelope-screen');
-  if(e){e.classList.add('hidden');}
   var l=document.querySelector('.letter');
   if(l){l.classList.add('show');}
-  try{launchConfetti(60);}catch(err){}
+  setTimeout(function(){
+    if(e){e.classList.add('hidden');}
+    try{launchConfetti(70);}catch(err){}
+    setTimeout(revealLetter,420);
+  },520);
+}
+
+/* 逐段浮现 + 落款描字 */
+function revealLetter(){
+  var items=document.querySelectorAll('.letter .salutation, .letter .body-text, .letter .signature');
+  var i=0;
+  function step(){
+    if(i>=items.length){ return; }
+    var el=items[i];
+    el.classList.add('reveal');
+    // 强制重排后再加 in，保证过渡生效
+    void el.offsetWidth;
+    el.classList.add('in');
+    if(el.classList.contains('signature')){
+      el.classList.add('draw');
+      el.classList.remove('reveal');
+    }
+    i++;
+    setTimeout(step, el.classList.contains('body-text')?520:360);
+  }
+  step();
 }
 function launchConfetti(n){
   var box=document.getElementById('confetti');if(!box)return;
@@ -361,5 +448,47 @@ document.addEventListener('click', function(e){
     setTimeout(function(x){return function(){x.remove();};}(s), 950);
   }
 });
+
+/* ===== 开场倒计时 3-2-1 ===== */
+(function(){
+  var scr=document.getElementById('cd-screen'), num=document.getElementById('cdNum');
+  if(!scr||!num) return;
+  var seq=['3','2','1','✦'];
+  var i=0;
+  function tick(){
+    if(i>=seq.length){
+      scr.classList.add('gone');
+      setTimeout(function(){ if(scr) scr.remove(); }, 400);
+      return;
+    }
+    num.textContent=seq[i];
+    num.style.animation='none';
+    void num.offsetWidth;
+    num.style.animation='cdPop .95s ease-out';
+    if(seq[i]==='✦'){
+      var f=document.createElement('div'); f.className='cd-flash'; scr.appendChild(f);
+      try{ launchConfetti(50); }catch(e){}
+      setTimeout(function(){ try{ launchConfetti(40); }catch(e){} }, 260);
+    }
+    i++;
+    setTimeout(tick, 900);
+  }
+  setTimeout(tick, 700);
+})();
+
+/* ===== 星空流星 ===== */
+(function meteors(){
+  function shoot(){
+    var m=document.createElement('div'); m.className='meteor';
+    m.style.left=(Math.random()*45)+'vw';
+    m.style.top=(-5+Math.random()*25)+'vh';
+    var d=1.8+Math.random()*1.6;
+    m.style.animationDuration=d+'s';
+    document.body.appendChild(m);
+    setTimeout(function(){ m.remove(); }, d*1000+200);
+    setTimeout(shoot, 2600+Math.random()*4200);
+  }
+  setTimeout(shoot, 2200);
+})();
 </script>
 </body></html>
