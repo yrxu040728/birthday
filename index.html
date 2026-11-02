@@ -123,6 +123,7 @@
 
   /* 空白相框：留给下一张合照 */
   .polaroid .ph.ph-empty{
+    position:relative;overflow:hidden;
     background:linear-gradient(135deg,#26356a,#1a2650);
     border:1px dashed rgba(240,213,150,.45);border-radius:4px;
     display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;
@@ -381,9 +382,8 @@
         <div class="tape"></div>
         <div class="ph ph-empty">
           <div class="ph-empty-icon">📷</div>
-          <div class="ph-empty-text">下一张合照<br>留　着</div>
+          <div class="ph-empty-text">待补拍 · 下一次见面</div>
         </div>
-        <div class="cap" style="position:static;margin-top:12px;text-align:center;font-family:'Long Cang','STKaiti','KaiTi','STXingkai',cursive;font-size:19px;color:#7a6f5d;line-height:1.6">待补拍 · 下一次见面</div>
       </div>
       </div>
     </div>
@@ -417,11 +417,30 @@
       <button class="blow-btn" onclick="blow()" id="blowBtn">🌟 先许个愿</button>
       <div class="wish-text" id="wish-text">愿望一定会实现的 🌟</div>
     </div>
+    <div class="gift-section" style="margin-top:70px;text-align:center">
+      <div class="section-title">✦ 礼 物 寓 意 ✦</div>
+      <div class="section-sub">姐送你的，每件都有话说</div>
+      <style>
+        @keyframes giftIn{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+        .gift-card{animation:giftIn 1s ease both}
+      </style>
+      <div style="display:flex;flex-direction:column;align-items:center;margin-top:26px">
+        <div class="gift-card" style="background:#fdf9ef;color:#3a3226;width:min(360px,86vw);padding:24px 26px;box-shadow:0 14px 44px rgba(0,0,10,.5);border-radius:12px;position:relative;text-align:left">
+          <div class="tape"></div>
+          <div style="font-family:'Long Cang','STKaiti','KaiTi','STXingkai',cursive;font-size:18px;line-height:1.95">
+            <div style="margin-bottom:15px"><span style="font-size:21px">🛏️</span> <b>枕头</b>　就希望你安安稳稳睡个好觉，少熬点夜，早点睡。</div>
+            <div style="margin-bottom:15px"><span style="font-size:21px">🧸</span> <b>配套的小熊生日帽枕套</b>　这枕头是 40×60 的，跟家里一般的 48×74 不一样，怕你没得套，就顺手按这个尺寸给你配的。小熊还戴着生日帽，凑个喜气。</div>
+            <div style="margin-bottom:15px"><span style="font-size:21px">🔋</span> <b>充电宝</b>　你每次出门都不带，手机老没电，我看着都急。这回放兜里，别再没电找不着人。</div>
+            <div><span style="font-size:21px">✨</span> <b>奥特曼面霜（青蛙王子家的）</b>　你说过你相信光，所以我就送你个光。哦对，脸也擦擦。</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="ending" style="margin-top:60px;text-align:center;font-family:'Long Cang','STKaiti','KaiTi','STXingkai',cursive">
       <div class="big" style="font-size:30px;color:#f0d596;margin-bottom:8px">生日快乐，今夜的星星都为你落 🌠</div>
       <div class="small" style="font-size:16px;color:#b8c4e8">—— 这封信，只为你而写</div>
       <div class="ending-replay" onclick="location.reload()">↻ 再看一次</div>
-      <div class="ending-tip">长按屏幕，把这一夜存下来</div>
+      <div class="ending-tip">截个图，把今晚存下来 📸</div>
       <style>
         .ending-replay{margin-top:34px;display:inline-block;padding:9px 26px;border-radius:40px;
           border:1px solid rgba(240,213,150,.5);color:#f0d596;font-size:15px;letter-spacing:2px;
@@ -714,4 +733,5 @@ function ping(f){
   }catch(e){}
 }
 </script>
+
 </body></html>
